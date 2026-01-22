@@ -159,7 +159,8 @@ input:checked + .slider:before {
     right: 20px;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem; /* Increased gap */
+    z-index: 100; /* Ensure it's above other content */
 }
 
 #inquiry-button {
@@ -225,6 +226,17 @@ input:checked + .slider:before {
 .contact-form-container {
     text-align: left;
 }
+
+/* Disqus Styles */
+.disqus-container {
+    max-width: 800px;
+    margin: 4rem auto 2rem auto;
+    padding: 2rem;
+    background-color: var(--container-bg-color);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
 
 .contact-form-container h2 {
     text-align: center;

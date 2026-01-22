@@ -33,6 +33,10 @@ body {
     padding: 2.5rem 1.5rem 3rem;
 }
 
+body.dark {
+    background: linear-gradient(180deg, var(--bg-color), #0b0d12 70%);
+}
+
 .page {
     max-width: 1100px;
     margin: 2rem auto 0;
@@ -142,6 +146,12 @@ button.ghost {
     gap: 1.6rem;
 }
 
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.6rem;
+}
+
 .card {
     background: var(--card-bg);
     border-radius: 20px;
@@ -153,6 +163,33 @@ button.ghost {
 }
 
 .muted {
+    color: var(--muted-text);
+}
+
+.content-card h2 {
+    margin: 0;
+}
+
+.content-list {
+    margin: 0.2rem 0 0;
+    padding-left: 1.2rem;
+    color: var(--muted-text);
+    display: grid;
+    gap: 0.4rem;
+}
+
+.note {
+    font-size: 0.9rem;
+    color: var(--muted-text);
+}
+
+.faq h3 {
+    margin: 0.4rem 0 0.2rem;
+    font-size: 1rem;
+}
+
+.faq p {
+    margin: 0 0 0.6rem;
     color: var(--muted-text);
 }
 

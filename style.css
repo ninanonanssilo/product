@@ -28,20 +28,26 @@ body {
     text-align: center;
 }
 
-button {
-    border: none;
-    border-radius: 999px;
-    padding: 0.8rem 1.8rem;
-    font-size: 1rem;
-    font-weight: 600;
-    background: #1f5eff;
-    color: #ffffff;
-    cursor: pointer;
+input[type="file"] {
+    width: 100%;
 }
 
-#webcam-container canvas {
-    width: 100%;
+.preview {
+    border: 1px dashed #c8ccd6;
     border-radius: 12px;
+    padding: 1rem;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.preview img {
+    max-width: 100%;
+    max-height: 260px;
+    border-radius: 10px;
+    display: none;
 }
 
 #label-container {
@@ -58,5 +64,10 @@ button {
 
     .simple-card {
         background: #1b1e24;
+    }
+
+    .preview {
+        border-color: #343a46;
+        background: rgba(255, 255, 255, 0.04);
     }
 }

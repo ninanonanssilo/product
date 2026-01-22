@@ -10,8 +10,12 @@
     <main class="simple-wrap">
         <div class="simple-card">
             <div>Teachable Machine Image Model</div>
-            <button type="button" onclick="init()">Start</button>
-            <div id="webcam-container"></div>
+            <input type="file" id="image-upload" accept="image/*">
+            <div class="preview">
+                <img id="preview-image" alt="업로드한 사진 미리보기">
+                <span id="placeholder">사진 파일을 선택하세요</span>
+            </div>
+            <div id="status">모델 로딩 중...</div>
             <div id="label-container"></div>
         </div>
     </main>

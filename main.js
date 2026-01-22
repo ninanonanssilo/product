@@ -4,45 +4,28 @@
 // the link to your model provided by Teachable Machine export panel
 const URL = "https://teachablemachine.withgoogle.com/models/smNjPb8GN/";
 
-let model, webcam, labelContainer, maxPredictions;
+let model, labelContainer, maxPredictions;
 
-// Load the image model and setup the webcam
-async function init() {
+const imageUpload = document.getElementById("image-upload");
+const previewImage = document.getElementById("preview-image");
+const placeholder = document.getElementById("placeholder");
+const statusEl = document.getElementById("status");
+
+async function loadModel() {
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
-
-    // load the model and metadata
-    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-    // or files from your local hard drive
-    // Note: the pose library adds "tmImage" object to your window (window.tmImage)
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
-
-    // Convenience function to setup a webcam
-    const flip = true; // whether to flip the webcam
-    webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-    await webcam.setup(); // request access to the webcam
-    await webcam.play();
-    window.requestAnimationFrame(loop);
-
-    // append elements to the DOM
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
     labelContainer = document.getElementById("label-container");
-    for (let i = 0; i < maxPredictions; i++) { // and class labels
+    labelContainer.innerHTML = "";
+    for (let i = 0; i < maxPredictions; i++) {
         labelContainer.appendChild(document.createElement("div"));
     }
+    statusEl.textContent = "준비 완료! 사진을 선택하세요.";
 }
 
-async function loop() {
-    webcam.update(); // update the webcam frame
-    await predict();
-    window.requestAnimationFrame(loop);
-}
-
-// run the webcam image through the image model
-async function predict() {
-    // predict can take in an image, video or canvas html element
-    const prediction = await model.predict(webcam.canvas);
+async function predict(imageElement) {
+    const prediction = await model.predict(imageElement);
     for (let i = 0; i < maxPredictions; i++) {
         const classPrediction =
             prediction[i].className + ": " + prediction[i].probability.toFixed(2);
@@ -50,4 +33,27 @@ async function predict() {
     }
 }
 
-window.init = init;
+imageUpload.addEventListener("change", event => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        previewImage.src = reader.result;
+        previewImage.onload = () => {
+            placeholder.style.display = "none";
+            previewImage.style.display = "block";
+            predict(previewImage);
+        };
+    };
+    reader.readAsDataURL(file);
+});
+
+window.addEventListener("DOMContentLoaded", async () => {
+    try {
+        await loadModel();
+    } catch (error) {
+        console.error(error);
+        statusEl.textContent = "모델을 불러오지 못했습니다.";
+    }
+});

@@ -45,10 +45,18 @@ h1 {
 
 #numbers-container {
     display: flex;
+    flex-direction: column; /* Stack rows vertically */
     justify-content: center;
     gap: 1rem;
     margin-bottom: 3rem;
     flex-wrap: wrap;
+}
+
+.lotto-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem; /* Space between rows */
 }
 
 #generate-button {

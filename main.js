@@ -63,22 +63,29 @@ const ballColors = [
 ];
 
 generateButton.addEventListener('click', () => {
-    const numbers = new Set();
-    while (numbers.size < 5) {
-        const randomNumber = Math.floor(Math.random() * 45) + 1;
-        numbers.add(randomNumber);
+    numbersContainer.innerHTML = ''; // Clear previous results
+
+    for (let i = 0; i < 5; i++) {
+        const numbers = new Set();
+        while (numbers.size < 6) {
+            const randomNumber = Math.floor(Math.random() * 45) + 1;
+            numbers.add(randomNumber);
+        }
+
+        const sortedNumbers = Array.from(numbers).sort((a, b) => a - b);
+
+        const row = document.createElement('div');
+        row.classList.add('lotto-row');
+
+        sortedNumbers.forEach(number => {
+            const lottoBall = document.createElement('lotto-ball');
+            lottoBall.setAttribute('number', number);
+            lottoBall.setAttribute('color', ballColors[Math.floor(Math.random() * ballColors.length)]);
+            row.appendChild(lottoBall);
+        });
+
+        numbersContainer.appendChild(row);
     }
-
-    const sortedNumbers = Array.from(numbers).sort((a, b) => a - b);
-
-    numbersContainer.innerHTML = '';
-
-    sortedNumbers.forEach(number => {
-        const lottoBall = document.createElement('lotto-ball');
-        lottoBall.setAttribute('number', number);
-        lottoBall.setAttribute('color', ballColors[Math.floor(Math.random() * ballColors.length)]);
-        numbersContainer.appendChild(lottoBall);
-    });
 });
 
 const themeToggle = document.getElementById('theme-toggle-checkbox');

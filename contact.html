@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-6255813143992597">
+    <title>Contact | Animal Face Test</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6255813143992597"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-kicker" data-i18n="kicker">AI Animal Face Test</span>
+            <h1 data-i18n="contactPageTitle">Contact</h1>
+            <p data-i18n="contactPageSubtitle">Partnerships, questions, or feedback.</p>
+        </div>
+        <div class="topbar-actions">
+            <nav class="topbar-nav">
+                <a href="index.html" data-i18n="navHome">Home</a>
+                <a href="about.html" data-i18n="navAbout">About</a>
+                <a href="privacy.html" data-i18n="navPrivacy">Privacy</a>
+                <a href="contact.html" class="active" data-i18n="navContact">Contact</a>
+            </nav>
+            <button id="language-toggle" class="ghost">KR</button>
+            <label class="theme-switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
+
+    <main class="page content-page">
+        <section class="card content-card">
+            <h2 data-i18n="contactFormTitle">Send us a message</h2>
+            <p class="muted" data-i18n="contactFormHint">We typically reply within 1-2 business days.</p>
+            <form id="inquiry-form" action="https://formspree.io/f/mzdebved" method="POST">
+                <label for="email" data-i18n="emailLabel">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message" data-i18n="messageLabel">Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <button type="submit" data-i18n="submitButton">Send Inquiry</button>
+            </form>
+            <div id="form-status" class="form-status"></div>
+        </section>
+        <section class="card content-card">
+            <h2 data-i18n="contactOtherTitle">Other info</h2>
+            <ul class="content-list">
+                <li data-i18n="contactOtherItem1">We welcome collaboration proposals and feedback.</li>
+                <li data-i18n="contactOtherItem2">Please include your company name and preferred timeline.</li>
+                <li data-i18n="contactOtherItem3">For urgent requests, mention it in the message title.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span data-i18n="footer">Powered by Teachable Machine</span>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

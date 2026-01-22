@@ -80,6 +80,32 @@ body.dark {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.topbar-nav {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.topbar-nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+}
+
+.topbar-nav a.active {
+    border-color: var(--border-color);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body.dark .topbar-nav a.active {
+    background: rgba(255, 255, 255, 0.08);
 }
 
 button {
@@ -164,6 +190,16 @@ button.ghost {
 
 .muted {
     color: var(--muted-text);
+}
+
+.content-page {
+    margin-top: 2rem;
+}
+
+.text-link {
+    color: var(--secondary);
+    font-weight: 600;
+    text-decoration: none;
 }
 
 .content-card h2 {

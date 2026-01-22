@@ -145,4 +145,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     form.addEventListener("submit", handleSubmit)
+
+    // Modal logic
+    const inquiryModal = document.getElementById('inquiry-modal');
+    const openModalButton = document.getElementById('inquiry-button');
+    const closeModalButton = document.querySelector('.close-button');
+
+    openModalButton.addEventListener('click', () => {
+        inquiryModal.classList.add('modal-open');
+    });
+
+    closeModalButton.addEventListener('click', () => {
+        inquiryModal.classList.remove('modal-open');
+    });
+
+    inquiryModal.addEventListener('click', (event) => {
+        if (event.target === inquiryModal) {
+            inquiryModal.classList.remove('modal-open');
+        }
+    });
 });

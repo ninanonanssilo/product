@@ -1,27 +1,70 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>동물상 테스트</title>
+    <title>Animal Face Test</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="simple-wrap">
-        <div class="simple-card">
-            <div>Teachable Machine Image Model</div>
-            <input type="file" id="image-upload" accept="image/*">
-            <div class="preview">
-                <img id="preview-image" alt="업로드한 사진 미리보기">
-                <span id="placeholder">사진 파일을 선택하세요</span>
-            </div>
-            <div id="status">모델 로딩 중...</div>
-            <div id="label-container"></div>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-kicker" data-i18n="kicker">AI Animal Face Test</span>
+            <h1 data-i18n="title">Dog vs Cat Face</h1>
+            <p data-i18n="subtitle">Upload a photo to see your animal vibe.</p>
         </div>
+        <div class="topbar-actions">
+            <button id="language-toggle" class="ghost">KR</button>
+            <label class="theme-switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="panel grid">
+            <div class="card input-card">
+                <h2 data-i18n="uploadTitle">Upload Photo</h2>
+                <p class="muted" data-i18n="uploadHint">Use a front-facing photo with good lighting.</p>
+                <input type="file" id="image-upload" accept="image/*">
+                <div class="preview">
+                    <img id="preview-image" alt="Preview">
+                    <span id="placeholder" data-i18n="placeholder">Choose a photo file</span>
+                </div>
+                <div id="status" class="status" data-i18n="statusLoading">Loading model...</div>
+                <div id="label-container"></div>
+            </div>
+
+            <div class="card inquiry-card">
+                <h2 data-i18n="inquiryTitle">Partnership Inquiry</h2>
+                <p class="muted" data-i18n="inquiryHint">We will respond within 1-2 business days.</p>
+                <form id="inquiry-form" action="https://formspree.io/f/mzdebved" method="POST">
+                    <label for="email" data-i18n="emailLabel">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="message" data-i18n="messageLabel">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit" data-i18n="submitButton">Send Inquiry</button>
+                </form>
+                <div id="form-status" class="form-status"></div>
+            </div>
+        </section>
+
+        <section class="comments card">
+            <h2 data-i18n="commentsTitle">Comments</h2>
+            <div id="disqus_thread"></div>
+            <noscript data-i18n="commentsNoscript">Please enable JavaScript to view the comments powered by Disqus.</noscript>
+        </section>
     </main>
+
+    <footer class="footer">
+        <span data-i18n="footer">Powered by Teachable Machine</span>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>

@@ -110,4 +110,39 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.remove('dark-mode');
         themeToggle.checked = false;
     }
+
+    const form = document.querySelector('.contact-form-container form');
+    const formStatus = document.getElementById('form-status');
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        try {
+            const response = await fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            if (response.ok) {
+                formStatus.innerHTML = "Thanks for your submission!";
+                formStatus.style.color = "green";
+                form.reset();
+            } else {
+                response.json().then(data => {
+                    if (Object.hasOwn(data, 'errors')) {
+                        formStatus.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                    } else {
+                        formStatus.innerHTML = "Oops! There was a problem submitting your form";
+                        formStatus.style.color = "red";
+                    }
+                })
+            }
+        } catch (error) {
+            formStatus.innerHTML = "Oops! There was a problem submitting your form";
+            formStatus.style.color = "red";
+        }
+    }
+    form.addEventListener("submit", handleSubmit)
 });

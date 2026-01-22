@@ -65,9 +65,9 @@ const ballColors = [
 generateButton.addEventListener('click', () => {
     numbersContainer.innerHTML = ''; // Clear previous results
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
         const numbers = new Set();
-        while (numbers.size < 6) {
+        while (numbers.size < 5) {
             const randomNumber = Math.floor(Math.random() * 45) + 1;
             numbers.add(randomNumber);
         }

@@ -1,167 +1,53 @@
-class LottoBall extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-    }
+// More API functions here:
+// https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
-    connectedCallback() {
-        const number = this.getAttribute('number');
-        const color = this.getAttribute('color');
+// the link to your model provided by Teachable Machine export panel
+const URL = "https://teachablemachine.withgoogle.com/models/smNjPb8GN/";
 
-        const wrapper = document.createElement('div');
-        wrapper.setAttribute('class', 'ball');
-        wrapper.style.backgroundColor = color;
+let model, webcam, labelContainer, maxPredictions;
 
-        const numberSpan = document.createElement('span');
-        numberSpan.textContent = number;
+// Load the image model and setup the webcam
+async function init() {
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
 
-        const style = document.createElement('style');
-        style.textContent = `
-            .ball {
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                color: white;
-                font-size: 1.5rem;
-                font-weight: bold;
-                box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3), 2px 2px 10px rgba(0,0,0,0.5);
-            }
-        `;
-        
-        this.shadowRoot.innerHTML = '';
-        this.shadowRoot.appendChild(style);
-        this.shadowRoot.appendChild(wrapper);
-        wrapper.appendChild(numberSpan);
+    // load the model and metadata
+    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+    // or files from your local hard drive
+    // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+    model = await tmImage.load(modelURL, metadataURL);
+    maxPredictions = model.getTotalClasses();
+
+    // Convenience function to setup a webcam
+    const flip = true; // whether to flip the webcam
+    webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+    await webcam.setup(); // request access to the webcam
+    await webcam.play();
+    window.requestAnimationFrame(loop);
+
+    // append elements to the DOM
+    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < maxPredictions; i++) { // and class labels
+        labelContainer.appendChild(document.createElement("div"));
     }
 }
 
-customElements.define('lotto-ball', LottoBall);
+async function loop() {
+    webcam.update(); // update the webcam frame
+    await predict();
+    window.requestAnimationFrame(loop);
+}
 
-const generateButton = document.getElementById('generate-button');
-const numbersContainer = document.getElementById('numbers-container');
-
-const ballColors = [
-    '#f44336',
-    '#e91e63',
-    '#9c27b0',
-    '#673ab7',
-    '#3f51b5',
-    '#2196f3',
-    '#03a9f4',
-    '#00bcd4',
-    '#009688',
-    '#4caf50',
-    '#8bc34a',
-    '#cddc39',
-    '#ffeb3b',
-    '#ffc107',
-    '#ff9800',
-    '#ff5722',
-];
-
-generateButton.addEventListener('click', () => {
-    numbersContainer.innerHTML = ''; // Clear previous results
-
-    for (let i = 0; i < 6; i++) {
-        const numbers = new Set();
-        while (numbers.size < 5) {
-            const randomNumber = Math.floor(Math.random() * 45) + 1;
-            numbers.add(randomNumber);
-        }
-
-        const sortedNumbers = Array.from(numbers).sort((a, b) => a - b);
-
-        const row = document.createElement('div');
-        row.classList.add('lotto-row');
-
-        sortedNumbers.forEach(number => {
-            const lottoBall = document.createElement('lotto-ball');
-            lottoBall.setAttribute('number', number);
-            lottoBall.setAttribute('color', ballColors[Math.floor(Math.random() * ballColors.length)]);
-            row.appendChild(lottoBall);
-        });
-
-        numbersContainer.appendChild(row);
+// run the webcam image through the image model
+async function predict() {
+    // predict can take in an image, video or canvas html element
+    const prediction = await model.predict(webcam.canvas);
+    for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction =
+            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+        labelContainer.childNodes[i].innerHTML = classPrediction;
     }
-});
+}
 
-const themeToggle = document.getElementById('theme-toggle-checkbox');
-const body = document.body;
-
-themeToggle.addEventListener('change', () => {
-    if (themeToggle.checked) {
-        body.classList.add('dark-mode');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-    }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        body.classList.add('dark-mode');
-        themeToggle.checked = true;
-    } else {
-        body.classList.remove('dark-mode');
-        themeToggle.checked = false;
-    }
-
-    const form = document.querySelector('.contact-form-container form');
-    const formStatus = document.getElementById('form-status');
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-        const data = new FormData(event.target);
-        try {
-            const response = await fetch(event.target.action, {
-                method: form.method,
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            if (response.ok) {
-                formStatus.innerHTML = "Thanks for your submission!";
-                formStatus.style.color = "green";
-                form.reset();
-            } else {
-                response.json().then(data => {
-                    if (Object.hasOwn(data, 'errors')) {
-                        formStatus.innerHTML = data["errors"].map(error => error["message"]).join(", ");
-                    } else {
-                        formStatus.innerHTML = "Oops! There was a problem submitting your form";
-                        formStatus.style.color = "red";
-                    }
-                })
-            }
-        } catch (error) {
-            formStatus.innerHTML = "Oops! There was a problem submitting your form";
-            formStatus.style.color = "red";
-        }
-    }
-    form.addEventListener("submit", handleSubmit)
-
-    // Modal logic
-    const inquiryModal = document.getElementById('inquiry-modal');
-    const openModalButton = document.getElementById('inquiry-button');
-    const closeModalButton = document.querySelector('.close-button');
-
-    openModalButton.addEventListener('click', () => {
-        inquiryModal.classList.add('modal-open');
-    });
-
-    closeModalButton.addEventListener('click', () => {
-        inquiryModal.classList.remove('modal-open');
-    });
-
-    inquiryModal.addEventListener('click', (event) => {
-        if (event.target === inquiryModal) {
-            inquiryModal.classList.remove('modal-open');
-        }
-    });
-});
+window.init = init;

@@ -1,8 +1,10 @@
 class LottoBall extends HTMLElement {
     constructor() {
         super();
-        const shadow = this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: 'open' });
+    }
 
+    connectedCallback() {
         const number = this.getAttribute('number');
         const color = this.getAttribute('color');
 
@@ -28,9 +30,10 @@ class LottoBall extends HTMLElement {
                 box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3), 2px 2px 10px rgba(0,0,0,0.5);
             }
         `;
-
-        shadow.appendChild(style);
-        shadow.appendChild(wrapper);
+        
+        this.shadowRoot.innerHTML = '';
+        this.shadowRoot.appendChild(style);
+        this.shadowRoot.appendChild(wrapper);
         wrapper.appendChild(numberSpan);
     }
 }
@@ -76,4 +79,28 @@ generateButton.addEventListener('click', () => {
         lottoBall.setAttribute('color', ballColors[Math.floor(Math.random() * ballColors.length)]);
         numbersContainer.appendChild(lottoBall);
     });
+});
+
+const themeToggle = document.getElementById('theme-toggle-checkbox');
+const body = document.body;
+
+themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        themeToggle.checked = true;
+    } else {
+        body.classList.remove('dark-mode');
+        themeToggle.checked = false;
+    }
 });

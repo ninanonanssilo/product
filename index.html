@@ -21,6 +21,32 @@
         crossorigin="anonymous"></script>
     <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
+    <style>
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #eee;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .share-button:hover {
+            background-color: #ddd;
+        }
+        .share-button svg {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5FQBLVMGWJ"></script>
     <script>
@@ -139,6 +165,17 @@
             <article class="card content-card">
                 <h2 data-i18n="shareTitle">Share Your Vibe!</h2>
                 <p data-i18n="shareBody">Did you get a result you love? Share it with your friends on social media and see what they get! #AnimalVibeChallenge</p>
+                <div class="share-buttons">
+                    <a href="#" id="twitter-share" class="share-button" title="Share on Twitter">
+                        <img src="twitter.svg" alt="Twitter">
+                    </a>
+                    <a href="#" id="facebook-share" class="share-button" title="Share on Facebook">
+                        <img src="facebook.svg" alt="Facebook">
+                    </a>
+                    <a href="#" id="copy-link" class="share-button" title="Copy Link">
+                        <img src="link.svg" alt="Copy Link">
+                    </a>
+                </div>
             </article>
             <article class="card content-card">
                 <h2 data-i18n="privacyTitle">Your Privacy Matters</h2>

@@ -354,4 +354,33 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (document.getElementById("disqus_thread")) {
         initDisqus();
     }
+
+    const twitterShare = document.getElementById("twitter-share");
+    const facebookShare = document.getElementById("facebook-share");
+    const copyLink = document.getElementById("copy-link");
+
+    if (twitterShare) {
+        twitterShare.addEventListener("click", (e) => {
+            e.preventDefault();
+            const url = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(window.location.href) + "&text=" + encodeURIComponent("I got my animal vibe! What's yours? #AnimalVibeChallenge");
+            window.open(url, "_blank");
+        });
+    }
+
+    if (facebookShare) {
+        facebookShare.addEventListener("click", (e) => {
+            e.preventDefault();
+            const url = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href);
+            window.open(url, "_blank");
+        });
+    }
+
+    if (copyLink) {
+        copyLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("Link copied to clipboard!");
+            });
+        });
+    }
 });
